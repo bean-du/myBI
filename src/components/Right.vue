@@ -3,7 +3,7 @@
         <el-row>
             <el-col :span="6"><div class="grid-content bg-purple body-left">
                 <api-config></api-config>
-                <data-config></data-config>
+                <data-tree></data-tree>
             </div></el-col>
             <el-col :span="18"><div class="grid-content bg-purple-light">
                 <charts-type></charts-type>
@@ -27,10 +27,11 @@ import Charts from './Charts.vue'
 import ChartsType from './ChartsType.vue'
 import ApiConfig from './ApiConfig.vue'
 import DataConfig from './DataConfig.vue'
+import DataTree from './DataTree.vue'
 import TableShow from './Table.vue'
 export default({
     components : {
-        Charts,ChartsType,ApiConfig,DataConfig,TableShow
+        Charts,ChartsType,ApiConfig,DataConfig,TableShow,DataTree
     },
     data (){
         return {

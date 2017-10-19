@@ -5,10 +5,11 @@ import App from './App';
 
 import router from './router';
 import Element from 'element-ui';
+import 'element-ui/lib/theme-default/index.css';
+
 import 'bootstrap/dist/css/bootstrap-theme.min.css';
 import 'bootstrap/dist/js/bootstrap.min.js';
 
-import 'element-ui/lib/theme-default/index.css';
 
 
 import store from './store/store.js';

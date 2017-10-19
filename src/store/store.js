@@ -56,7 +56,7 @@ const Store = new vuex.Store({
                     area : '华南大区',
                     name : '陈建国',
                     tableData: [1,2,3,6,0,1,0,1,0,1,1,1,2,3,6,9],
-                    monthPlan : [1,2,3,6],
+                    monthPlan : [6,2,3,6],
                     month :  [0,1,0,1],
                     today:   [1,1,2,4],
                     year:   [1,5,1,6]
@@ -65,37 +65,36 @@ const Store = new vuex.Store({
                     area : '华北大区',
                     name : '王大路',
                     tableData: [1,2,3,6,0,1,0,1,0,1,1,1,2,3,6,9],
-                    monthPlan : [1,2,3,6],
+                    monthPlan : [1,1,4,6],
                     month :  [3,1,0,4],
                     today:   [0,1,2,3],
                     year:   [10,5,8,23]
                 }
             ],
             amount : {
-                header : [
-                    {
-                        name: '汇总统计',
-                        categories: ['完成率', '排名', '备注']
-                    }
-                ],
+                header :
+                {
+                    name: '汇总统计',
+                    categories: ['完成率', '排名', '备注']
+                },
                 body : [
                     {
-                        area : '华北大区',
+                        area : '华中大区',
+                        name : '李美玲',
+                        data: ['40%',1,'-'],
+                        chartData : ['30%',1,'-'],
+                    },
+                    {
+                        area : '华南大区',
                         name : '陈建国',
-                        data: ['30%',1,''],
-                        chartData : ['30%',1,''],
+                        data: ['30%',2,'-'],
+                        chartData : ['30%',2,'-'],
                     },
                     {
                         area : '华北大区',
-                        name : '陈建国',
-                        data: ['30%',1,''],
-                        chartData : ['30%',1,''],
-                    },
-                    {
-                        area : '华北大区',
-                        name : '陈建国',
-                        data: ['30%',1,''],
-                        chartData : ['30%',1,''],
+                        name : '王大路',
+                        data: ['20%',3,'-'],
+                        chartData : ['30%',3,'-'],
                     }
                 ]
             }
@@ -110,6 +109,46 @@ const Store = new vuex.Store({
         },
         getTableData : state => {
             return state.tableData;
+        },
+        getDimension : state => {
+
+        },
+        getChartData : state => {
+            let data = state.tableData;
+            let list = [];
+            let categories = [];
+            data.body.forEach(function (val, key) {
+               categories.push(val.area + '['+ val.name +']')
+            });
+            data.header.forEach((item,index)=>{
+                if(index > 0){
+                    let cache = item;
+                    let chartsData = {
+                        chart:{type:'bar'},
+                        xAxis:{categories:[]},
+                        title:{text:''},
+                        yAxis: {title: {text: '台'}},
+                        series : [],
+                    };
+                    chartsData.xAxis.categories = categories;
+                    chartsData.title.text = item.title;
+                    chartsData.title.name = item.name;
+
+                    item.categories.forEach((v,k)=>{
+                        let series = [];
+                        series = {
+                            name : v,
+                            data : []
+                        };
+                        data.body.forEach((val,key)=>{
+                            series.data.push(val[cache['name']][k]);
+                        });
+                        chartsData.series.push(series);
+                    });
+                    list.push(chartsData);
+                }
+            });
+            return list;
         },
         getDataFromTableData : state => {
             let  datas = [];
@@ -145,9 +184,6 @@ const Store = new vuex.Store({
             }
             return datas;
         },
-        getChoiceTab : state => {
-            return state.choiceTab;
-        }
     },
     mutations : {
         putChartData : (state, payload) => {
@@ -166,3 +202,12 @@ const Store = new vuex.Store({
 });
 
 export default Store;
+
+function getJsonLength(json){
+    var cc = 0;
+    for(var i in json)
+    {
+        cc++;
+    }
+    return cc;
+}
